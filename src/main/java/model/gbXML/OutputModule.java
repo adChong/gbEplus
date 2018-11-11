@@ -54,6 +54,12 @@ public class OutputModule {
 		recordInputs("HTML","","Column Separator","");
 		recordInputs("JtoKWH","","Unit Conversion","");//TODO need to revisit
 		addObject(file);
+
+		//export: DXF
+		recordInputs("Output:Surfaces:Drawing","","","");
+        recordInputs("DXF","","Report Type","");
+        recordInputs("Triangulate3DFace","","Report Specifications 1","");
+        addObject(file);
 	}
 	
 	
