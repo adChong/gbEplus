@@ -121,7 +121,7 @@
 		<object description="Material:NoMass" reference = "Climate Zone 1">
 			<field description = "Name" type="String">Steel Joist Floor with Batt Insulation</field>
 			<field description = "Roughness" type="String">Rough</field>
-			<field description = "Thermal Resistance" type="Double">0</field>
+			<field description = "Thermal Resistance" type="Double">0.001</field>
 			<field description = "Thermal Absorptance" type="Double">0.9</field>
 			<field description = "Solar Absorptance" type = "Double">0.7</field>
 			<field description = "Visible Absorptance" type = "Double">0.7</field>
