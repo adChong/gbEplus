@@ -363,7 +363,7 @@
 		</object>
 		<object description="WindowMaterial:SimpleGlazingSystem" reference="Climate Zone 2">
 			<field description = "Name" type = "String">Simple Skylight</field>
-			<field description = "U-Factor" type="Double">7.72</field>
+			<field description = "U-Factor" type="Double">3.92</field>
 			<field description = "Solar Heat Gain Coefficient" type="Double">0.36</field>
 		</object>
 		<object description="Construction" reference = "Climate Zone 2">
