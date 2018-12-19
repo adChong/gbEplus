@@ -54,12 +54,52 @@ public class OutputModule {
 		recordInputs("HTML","","Column Separator","");
 		recordInputs("JtoKWH","","Unit Conversion","");//TODO need to revisit
 		addObject(file);
-
-		//export: DXF
-		recordInputs("Output:Surfaces:Drawing","","","");
+		
+		//Variable
+        recordInputs("Output:Variable","","","");
+        recordInputs("*","","Key Value","");
+        recordInputs("Cooling Coil Total Cooling Rate","","Variable Name","");
+        recordInputs("hourly","","Reporting Frequency","");
+        addObject(file);
+        
+        recordInputs("Output:Variable","","","");
+        recordInputs("*","","Key Value","");
+        recordInputs("Chiller Electric Power","","Variable Name","");
+        recordInputs("hourly","","Reporting Frequency","");
+        addObject(file);
+        
+        recordInputs("Output:Variable","","","");
+        recordInputs("*","","Key Value","");
+        recordInputs("Pump Electric Power","","Variable Name","");
+        recordInputs("hourly","","Reporting Frequency","");
+        addObject(file);
+        
+        recordInputs("Output:Variable","","","");
+        recordInputs("*","","Key Value","");
+        recordInputs("Cooling Tower Fan Electric Power","","Variable Name","");
+        recordInputs("hourly","","Reporting Frequency","");
+        addObject(file);
+        
+        recordInputs("Output:Variable","","","");
+        recordInputs("*","","Key Value","");
+        recordInputs("Pump Shaft Power","","Variable Name","");
+        recordInputs("hourly","","Reporting Frequency","");
+        addObject(file);
+        
+        recordInputs("Output:Variable","","","");
+        recordInputs("*","","Key Value","");
+        recordInputs("Fan Electric Power","","Variable Name","");
+        recordInputs("hourly","","Reporting Frequency","");
+        addObject(file);
+        
+        recordInputs("Output:Surfaces:Drawing","","","");
         recordInputs("DXF","","Report Type","");
         recordInputs("Triangulate3DFace","","Report Specifications 1","");
         addObject(file);
+        
+//        recordInputs("Output:Diagnostics","","","");
+//        recordInputs("DisplayExtraWarnings","","Key 1","");
+//        addObject(file);
 	}
 	
 	
