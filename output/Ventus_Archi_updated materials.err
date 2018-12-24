@@ -1,0 +1,146 @@
+Program Version,EnergyPlus, Version 8.6.0-198c6a3cff, YMD=2018.12.24 22:54,IDD_Version 8.6.0
+   ************* Beginning Zone Sizing Calculations
+   ** Warning ** Weather file location will be used rather than entered (IDF) Location object.
+   **   ~~~   ** ..Location object=4 ARCHITECTURE DR_ SINGAPORE 117566_ SINGAPORE
+   **   ~~~   ** ..Weather File Location=SINGAPORE-CHANGI-AP - SGP Custom-486980 WMO#=486980
+   **   ~~~   ** ..due to location differences, Latitude difference=[7.25E-002] degrees, Longitude difference=[0.21] degrees.
+   **   ~~~   ** ..Time Zone difference=[7.0] hour(s), Elevation difference=[58.99] percent, [23.01] meters.
+   ** Warning ** GetVertices: Floor is upside down! Tilt angle=[0.0], should be near 180, Surface="T-223-288-I-F-562", in Zone="3RD STOREY:288 ROOM".
+   **   ~~~   ** Automatic fix is attempted.
+   ** Warning ** GetVertices: Roof/Ceiling is upside down! Tilt angle=[180.0], should be near 0, Surface="T-223-288-I-F-562_REVERSED", in Zone="2ND STOREY:223 ROOM".
+   **   ~~~   ** Automatic fix is attempted.
+   ** Warning ** GetVertices: Floor is not oriented correctly! Tilt angle=[151.0], should be near 180, Surface="B-419-419-I-F-1629", in Zone="3RD STORY_A:419 ROOM".
+   ** Warning ** GetSurfaceData: Entered Zone Floor Areas differ from calculated Zone Floor Area(s).
+   **   ~~~   ** ...use Output:Diagnostics,DisplayExtraWarnings; to show more details on individual zones.
+   ** Warning ** GetSurfaceData: There are 136 coincident/collinear vertices; These have been deleted unless the deletion would bring the number of surface sides < 3.
+   **   ~~~   ** For explicit details on each problem surface, use Output:Diagnostics,DisplayExtraWarnings;
+   ** Warning ** ProcessSurfaceVertices: Possible non-planar surface:"S-415-E-W-1605", Max "out of line"=2.73586E-004 at Vertex # 6
+   ** Warning ** ProcessSurfaceVertices: Possible non-planar surface:"S-44-E-W-33", Max "out of line"=1.17913E-004 at Vertex # 4
+   ** Warning ** ProcessSurfaceVertices: Possible non-planar surface:"S-234-E-W-628", Max "out of line"=1.03676E-004 at Vertex # 5
+   ** Warning ** ProcessSurfaceVertices: Possible non-planar surface:"N-411-E-W-1465", Max "out of line"=1.74715E-004 at Vertex # 8
+   ** Warning ** ProcessSurfaceVertices: Possible non-planar surface:"N-411-E-W-1466", Max "out of line"=1.30071E-004 at Vertex # 4
+   ** Warning ** ProcessSurfaceVertices: Possible non-planar surface:"S-302-E-W-859", Max "out of line"=1.00738E-004 at Vertex # 3
+   ************* Note that the following warning(s) may/will occur if you have not enclosed your zone completely.
+   ** Warning ** Entered Zone Volumes differ from calculated zone volume(s).
+   **   ~~~   ** ...use Output:Diagnostics,DisplayExtraWarnings; to show more details on individual zones.
+   ** Warning ** CheckUsedConstructions: There are 1 nominally unused constructions in input.
+   **   ~~~   ** For explicit details on each unused construction, use Output:Diagnostics,DisplayExtraWarnings;
+   ** Warning ** DetermineShadowingCombinations: There are 42 surfaces which are receiving surfaces and are non-convex.
+   **   ~~~   ** ...Shadowing values may be inaccurate. Check .shd report file for more surface shading details
+   **   ~~~   ** ...Add Output:Diagnostics,DisplayExtraWarnings; to see individual warnings for each surface.
+   ** Severe  ** DetermineShadowingCombinations: There are 15 surfaces which are casting surfaces and are non-convex.
+   **   ~~~   ** ...Shadowing values may be inaccurate. Check .shd report file for more surface shading details
+   **   ~~~   ** ...Add Output:Diagnostics,DisplayExtraWarnings; to see individual severes for each surface.
+   ************* Beginning System Sizing Calculations
+   ************* Beginning Plant Sizing Calculations
+   ** Warning ** In calculating the design coil UA for Coil:Cooling:Water 2ND STORY_A COOLING COIL
+   **   ~~~   ** no apparatus dew-point can be found for the initial entering and leaving conditions;
+   **   ~~~   ** the coil outlet design conditions will be changed to correct the problem.
+   **   ~~~   ** The initial design conditions are: Tair,in = 29.0464
+   **   ~~~   **                                    Wair,in = 1.786144E-002
+   **   ~~~   **                                    Twater,in = 6.7000
+   **   ~~~   **                                    Tair,out = 12.8000
+   **   ~~~   **                                    Wair,out = 8.291776E-003
+   **   ~~~   ** The revised design conditions are: Tair,out = 12.7997
+   **   ~~~   **                                    Wair,out = 8.291881E-003
+   ** Warning ** In calculating the design coil UA for Coil:Cooling:Water 3RD STOREY COOLING COIL
+   **   ~~~   ** no apparatus dew-point can be found for the initial entering and leaving conditions;
+   **   ~~~   ** the coil outlet design conditions will be changed to correct the problem.
+   **   ~~~   ** The initial design conditions are: Tair,in = 27.9351
+   **   ~~~   **                                    Wair,in = 1.705048E-002
+   **   ~~~   **                                    Twater,in = 6.7000
+   **   ~~~   **                                    Tair,out = 12.8000
+   **   ~~~   **                                    Wair,out = 8.291776E-003
+   **   ~~~   ** The revised design conditions are: Tair,out = 12.7997
+   **   ~~~   **                                    Wair,out = 8.291881E-003
+   ** Warning ** In calculating the design coil UA for Coil:Cooling:Water 3RD STORY_A COOLING COIL
+   **   ~~~   ** no apparatus dew-point can be found for the initial entering and leaving conditions;
+   **   ~~~   ** the coil outlet design conditions will be changed to correct the problem.
+   **   ~~~   ** The initial design conditions are: Tair,in = 28.9063
+   **   ~~~   **                                    Wair,in = 1.739585E-002
+   **   ~~~   **                                    Twater,in = 6.7000
+   **   ~~~   **                                    Tair,out = 12.8000
+   **   ~~~   **                                    Wair,out = 8.291776E-003
+   **   ~~~   ** The revised design conditions are: Tair,out = 12.7997
+   **   ~~~   **                                    Wair,out = 8.291881E-003
+   ** Warning ** In calculating the design coil UA for Coil:Cooling:Water 2ND STOREY COOLING COIL
+   **   ~~~   ** no apparatus dew-point can be found for the initial entering and leaving conditions;
+   **   ~~~   ** the coil outlet design conditions will be changed to correct the problem.
+   **   ~~~   ** The initial design conditions are: Tair,in = 28.9740
+   **   ~~~   **                                    Wair,in = 1.773782E-002
+   **   ~~~   **                                    Twater,in = 6.7000
+   **   ~~~   **                                    Tair,out = 12.8000
+   **   ~~~   **                                    Wair,out = 8.291776E-003
+   **   ~~~   ** The revised design conditions are: Tair,out = 12.7997
+   **   ~~~   **                                    Wair,out = 8.291881E-003
+   ** Warning ** In calculating the design coil UA for Coil:Cooling:Water LOWER 1ST STOREY COOLING COIL
+   **   ~~~   ** no apparatus dew-point can be found for the initial entering and leaving conditions;
+   **   ~~~   ** the coil outlet design conditions will be changed to correct the problem.
+   **   ~~~   ** The initial design conditions are: Tair,in = 27.2520
+   **   ~~~   **                                    Wair,in = 1.672471E-002
+   **   ~~~   **                                    Twater,in = 6.7000
+   **   ~~~   **                                    Tair,out = 12.8000
+   **   ~~~   **                                    Wair,out = 8.291776E-003
+   **   ~~~   ** The revised design conditions are: Tair,out = 12.7997
+   **   ~~~   **                                    Wair,out = 8.291881E-003
+   ** Warning ** In calculating the design coil UA for Coil:Cooling:Water 1ST STOREY COOLING COIL
+   **   ~~~   ** no apparatus dew-point can be found for the initial entering and leaving conditions;
+   **   ~~~   ** the coil outlet design conditions will be changed to correct the problem.
+   **   ~~~   ** The initial design conditions are: Tair,in = 29.2933
+   **   ~~~   **                                    Wair,in = 1.779111E-002
+   **   ~~~   **                                    Twater,in = 6.7000
+   **   ~~~   **                                    Tair,out = 12.8000
+   **   ~~~   **                                    Wair,out = 8.291776E-003
+   **   ~~~   ** The revised design conditions are: Tair,out = 12.7997
+   **   ~~~   **                                    Wair,out = 8.291881E-003
+   ** Warning ** GetElectricEIRChillerInput: Chiller:Electric:EIR="CHILLER%"
+   **   ~~~   ** Energy input ratio as a function of part-load ratio curve output is not equal to 1.0 (+ or - 10%) at reference conditions.
+   **   ~~~   ** Curve output at reference conditions = 1.114
+   ************* Testing Individual Branch Integrity
+   ************* All Branches passed integrity testing
+   ************* Testing Individual Supply Air Path Integrity
+   ************* All Supply Air Paths passed integrity testing
+   ************* Testing Individual Return Air Path Integrity
+   ************* All Return Air Paths passed integrity testing
+   ************* No node connection errors were found.
+   ************* Beginning Simulation
+   ************* Simulation Error Summary *************
+   ************* There are 2 unused schedules in input.
+   ************* Use Output:Diagnostics,DisplayUnusedSchedules; to see them.
+   *************
+   ************* ===== Recurring Surface Error Summary =====
+   ************* The following surface error messages occurred.
+   *************
+   ************* Base Surface does not surround subsurface errors occuring...
+   ************* Check that the GlobalGeometryRules object is expressing the proper starting corner and direction [CounterClockwise/Clockwise]
+   *************
+   ** Warning ** Base surface does not surround subsurface (CHKSBS), Overlap Status=Partial-Overlap
+   **   ~~~   **   The base surround errors occurred 3 times.
+   **   ~~~   ** Surface "E-419-E-W-1621" overlaps SubSurface "E-419-E-W-1621-W-1_0"
+   **   ~~~   ** Surface "E-419-E-W-1621" overlaps SubSurface "E-419-E-W-1621-W-1_1"
+   **   ~~~   ** Surface "E-419-E-W-1621" overlaps SubSurface "E-419-E-W-1621-W-1_2"
+   ** Warning ** Base surface does not surround subsurface (CHKSBS), Overlap Status=Partial-Overlap
+   **   ~~~   **   The base surround errors occurred 3 times.
+   **   ~~~   ** Surface "W-419-E-W-1626" overlaps SubSurface "W-419-E-W-1626-W-1_0"
+   **   ~~~   ** Surface "W-419-E-W-1626" overlaps SubSurface "W-419-E-W-1626-W-1_1"
+   **   ~~~   ** Surface "W-419-E-W-1626" overlaps SubSurface "W-419-E-W-1626-W-1_3"
+   ** Warning ** Base surface does not surround subsurface (CHKSBS), Overlap Status=Partial-Overlap
+   **   ~~~   **   The base surround errors occurred 1 times.
+   **   ~~~   ** Surface "E-405-E-W-1299" overlaps SubSurface "E-405-E-W-1299-W-1_0"
+   ** Warning ** Base surface does not surround subsurface (CHKSBS), Overlap Status=Partial-Overlap
+   **   ~~~   **   The base surround errors occurred 1 times.
+   **   ~~~   ** Surface "W-405-E-W-1312" overlaps SubSurface "W-405-E-W-1312-W-1_2"
+   *************
+   **   ~~~   **   The base surround errors occurred 8 times (total).
+   *************
+   *************
+   ************* ===== Final Error Summary =====
+   ************* The following error categories occurred.  Consider correcting or noting.
+   ************* Nominally Unused Constructions
+   ************* ..The nominally unused constructions warning is provided to alert you to potential conditions that can cause
+   ************* ..extra time during simulation. Each construction is calculated by the algorithm indicated in the HeatBalanceAlgorithm
+   ************* ..object. You may remove the constructions indicated (when you use the DisplayExtraWarnings option).
+   *************
+   ************* EnergyPlus Warmup Error Summary. During Warmup: 0 Warning; 0 Severe Errors.
+   ************* EnergyPlus Sizing Error Summary. During Sizing: 13 Warning; 0 Severe Errors.
+   ************* EnergyPlus Completed Successfully-- 206 Warning; 15 Severe Errors; Elapsed Time=00hr 00min 45.00sec

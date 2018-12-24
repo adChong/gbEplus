@@ -96,9 +96,10 @@ public class DOEReferenceEquipmentData implements EnergyPlusDataAPI{
 	                    Element equip = equipmentList.get(k);
 	                    String fuelType = equip.getAttributeValue("powerType");
 	                    
-	                    loadMap.put(fuelType, new String[2]);
+	                    loadMap.put(fuelType, new String[3]);
 	                    loadMap.get(fuelType)[0] = equip.getText();
 	                    loadMap.get(fuelType)[1] = equip.getAttributeValue("unit");
+	                    loadMap.get(fuelType)[2] = equip.getAttributeValue("schedule");
 
 	                }
 	            }

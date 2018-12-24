@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<svg width="250mm" height="200mm" viewBox="0 0   2500    1500"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:ev="http://www.w3.org/2001/xml-events">
+<g font-family="Verdana" font-size="8" >
+  <text x="     1" y="     1">ERROR - COULD NOT COMPLETE DRAWING! Examine ERR file for possible explanation. Last error message is:   "Error: No node connection found after the following object: LEVEL 1:4 ROOM"</text>
+  <rect x="   200" y="    20" width="     1" height="     1" style = "fill:wheat; stroke: Black;"/>    29
+  <text x="   202" y="    14">LEVEL 1 ZONE SPLITTER</text>
+  <rect x="   200" y="    20" width="     1" height="     1" style = "fill:wheat; stroke: Black;"/>    33
+  <text x="   202" y="    14">LEVEL 1:4 ROOM VAV NOREHEAT</text>
+  <rect x="   200" y="    20" width="     1" height="     1" style = "fill:lawngreen; stroke: Black;"/>    35
+  <text x="   202" y="    14">LEVEL 1 OA MIXING BOX</text>
+  <rect x="   200" y="    20" width="     1" height="     1" style = "fill:skyblue; stroke: Black;"/>    37
+  <text x="   202" y="    14">LEVEL 1 COOLING COIL</text>
+  <rect x="   200" y="    20" width="     1" height="     1" style = "fill:silver; stroke: Black;"/>    39
+  <text x="   202" y="    14">LEVEL 1 SUPPLY FAN</text>
+  <rect x="   200" y="    20" width="     1" height="     1" style = "fill:chartreuse; stroke: Black;"/>    49
+  <text x="   202" y="    14">LEVEL 1:4 ROOM</text>
+  <line x1="   201" y1="    20" x2="   200" y2="    20" style = "stroke: Black;"/>
+  <line x1="   201" y1="    20" x2="   200" y2="    20" style = "stroke: Black;"/>
+  <line x1="   201" y1="    20" x2="   200" y2="    20" style = "stroke: Black;"/>
+  <line x1="   201" y1="    20" x2="   200" y2="    20" style = "stroke: Black;"/>
+  <line x1="   201" y1="    20" x2="   200" y2="    20" style = "stroke: Black;"/>
+  <text x="   200" y="    61">Unused Non-Parent Objects:</text>
+  <text x="   220" y="    81">OutdoorAir:NodeList</text>
+  <text x="   220" y="   101">OutdoorAir:Node</text>
+  <text x="   220" y="   121">CONDENSER WATER LOOP CONDENSER WATER TEMP MANAGER</text>
+  <text x="   220" y="   141">CHILLED WATER LOOP CHILLED WATER TEMP MANAGER</text>
+  <text x="   220" y="   161">CHILLED WATER LOOP CHILLED WATER TEMP MANAGER</text>
+  <text x="   220" y="   181">LEVEL 1 AHU OUTLET SETPOINT</text>
+  <text x="   220" y="   201">LEVEL 1 COOLING COIL AIR TEMP MANAGER</text>
+  <text x="   220" y="   221">CHILLED WATER LOOP CHILLED WATER SUPPLY SIDE BYPASS PIPE</text>
+  <text x="   220" y="   241">CHILLED WATER LOOP CHILLED WATER SUPPLY OUTLET PIPE</text>
+  <text x="   220" y="   261">CHILLED WATER LOOP CHILLED WATER DEMAND SIDE BYPASS PIPE</text>
+  <text x="   220" y="   281">CHILLED WATER LOOP CHILLED WATER DEMAND OUTLET PIPE</text>
+  <text x="   220" y="   301">CONDENSER WATER LOOP CONDENSER WATER SUPPLY OUTLET PIPE</text>
+  <text x="   220" y="   321">CONDENSER WATER LOOP CONDENSER WATER SUPPLY SIDE BYPASS PIPE</text>
+  <text x="   220" y="   341">CONDENSER WATER LOOP CONDENSER WATER DEMAND INLET PIPE</text>
+  <text x="   220" y="   361">CONDENSER WATER LOOP CONDENSER WATER DEMAND SIDE BYPASS PIPE</text>
+  <text x="   220" y="   381">CONDENSER WATER LOOP CONDENSER WATER DEMAND OUTLET PIPE</text>
+  <text x="   220" y="   401">CHILLED WATER LOOP CHILLED WATER DEMAND SPLITTER</text>
+  <text x="   220" y="   421">CHILLED WATER LOOP CHILLED WATER DEMAND MIXER</text>
+  <text x="   220" y="   441">CHILLED WATER LOOP CHILLED WATER SUPPLY SPLITTER</text>
+  <text x="   220" y="   461">CHILLED WATER LOOP CHILLED WATER SUPPLY MIXER</text>
+  <text x="   220" y="   481">CONDENSER WATER LOOP CONDENSER WATER DEMAND SPLITTER</text>
+  <text x="   220" y="   501">CONDENSER WATER LOOP CONDENSER WATER DEMAND MIXER</text>
+  <text x="   220" y="   521">CONDENSER WATER LOOP CONDENSER WATER SUPPLY SPLITTER</text>
+  <text x="   220" y="   541">CONDENSER WATER LOOP CONDENSER WATER SUPPLY MIXER</text>
+  <text x="   220" y="   561">LEVEL 1:2 ROOM</text>
+  <text x="   220" y="   581">LEVEL 1:1 ROOM</text>
+  <text x="   220" y="   601">LEVEL 1:3 ROOM</text>
+  <text x="   220" y="   621">LEVEL 1:2 ROOM VAV NOREHEAT</text>
+  <text x="   220" y="   641">LEVEL 1:1 ROOM VAV NOREHEAT</text>
+  <text x="   220" y="   661">LEVEL 1:3 ROOM VAV NOREHEAT</text>
+  <text x="   220" y="   681">LEVEL 1 ZONE MIXER</text>
+  <text x="   220" y="   701">LEVEL 1 COOLING COIL CONTROLLER</text>
+  <text x="   220" y="   721">LEVEL 1 OA CONTROLLER</text>
+  <text x="   220" y="   741">CHILLER%</text>
+  <text x="   220" y="   761">CHILLER%</text>
+  <text x="   220" y="   781">TOWER%</text>
+  <text x="   220" y="   801">CHILLED WATER LOOP CHILLED WATER PRIMARY SUPPLY PUMP</text>
+  <text x="   220" y="   821">CHILLED WATER LOOP CHILLED WATER SECONDARY PUMP</text>
+  <text x="   220" y="   841">CONDENSER WATER LOOP CONDENSER WATER SUPPLY PUMP</text>
+  <text x="   220" y="   861">LEVEL 1:1 ROOM</text>
+  <text x="   220" y="   881">LEVEL 1:3 ROOM</text>
+  <text x="   200" y="   921">
+The following are not supported: objects related to controls, AirTerminal:SingleDuct:Uncontrolled, or ZoneHVAC:IdealLoadsAirSystem</text>
+</g>
+</svg>

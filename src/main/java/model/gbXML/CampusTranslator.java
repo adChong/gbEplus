@@ -197,21 +197,10 @@ public class CampusTranslator {
 					oaPlugin = dataPlugins.get(i);
 				}
 			}
-			Map<String, String[]> oaMap;
-			Double numPeople;
 			if(oaPlugin==null){
 				oaPlugin = new ASHRAEOAData();//default to ASHRAE data
-				oaMap = oaPlugin.getValuesInHashMap(space.getSpaceType());
-				numPeople = space.getPeopleNumber();
-				if (numPeople == null) {
-					numPeople = Double.valueOf(oaMap.get("PeopleNumber")[0]);
-					// TODO Warning, the people value is empty, fill it in based
-					// on its spaceType
-				}
-			} else {
-				oaMap = oaPlugin.getValuesInHashMap(space.getSpaceType());
-				numPeople = Double.parseDouble(oaMap.get("PeopleNumber")[0]);
 			}
+			Map<String, String[]> oaMap = oaPlugin.getValuesInHashMap(space.getSpaceType());
 			
 			//************Set-up Lights assumption***********
 			EnergyPlusDataAPI lightPlugin = null;
@@ -241,8 +230,16 @@ public class CampusTranslator {
 			if (conditionType.equals("Heated") || conditionType.equals("Cooled")
 					|| conditionType.equals("HeatedAndCooled") || conditionType.equals("Unconditioned")) {
 
+				Double numPeople = space.getPeopleNumber();
+
 				if (conditionType.equals("Unconditioned")) {
 					numPeople = 0.0; // force to 0.0 for unconditioned spaces.
+				}
+
+				if (numPeople == null) {
+					numPeople = Double.valueOf(oaMap.get("PeopleNumber")[0]);
+					// TODO Warning, the people value is empty, fill it in based
+					// on its spaceType
 				}
 
 				Double heatGain = space.getPeopleHeatGain()[0] + space.getPeopleHeatGain()[1];
@@ -322,12 +319,20 @@ public class CampusTranslator {
 			String lightSchedule = space.getLightScheduleId();
 			if (lightSchedule == null) {
 				lightSchedule = ScheduleTranslator.BUILDING_LIGHT_SCHEDULE;
-				if (scheduleTranslator.getScheduleNameFromID(lightSchedule) == null) {
-					scheduleTranslator.addLightSchedule(ScheduleTranslator.BUILDING_LIGHT_SCHEDULE,
-							ScheduleTranslator.BUILDING_LIGHT_SCHEDULE, file);
+				if (lightMap.get("LightPowerPerArea")[2] == null) {
+					if (scheduleTranslator.getScheduleNameFromID(lightSchedule) == null) {
+						scheduleTranslator.addLightSchedule(ScheduleTranslator.BUILDING_LIGHT_SCHEDULE,
+								ScheduleTranslator.BUILDING_LIGHT_SCHEDULE, file);
+					}
+				} else {
+					if (scheduleTranslator.getScheduleNameFromID(lightSchedule) == null) {
+						scheduleTranslator.addSchedule(ScheduleTranslator.BUILDING_LIGHT_SCHEDULE,
+								ScheduleTranslator.BUILDING_LIGHT_SCHEDULE, lightMap.get("LightPowerPerArea")[2], file);
+					}
 				}
 			}
 
+			
 			idfWriter.recordInputs("Lights", "", "", "");
 			idfWriter.recordInputs(space.getSpaceName() + " Lights", "", "Name", "");
 			idfWriter.recordInputs(space.getSpaceName(), "", "Zone or ZoneList Name", "");
@@ -359,9 +364,16 @@ public class CampusTranslator {
 			//TODO WX: more fuel types???
 			if (equipmentSchedule == null) {
 				equipmentSchedule = ScheduleTranslator.BUILDING_EQUIP_SCHEDUEL;
-				if (scheduleTranslator.getScheduleNameFromID(equipmentSchedule) == null) {
-					scheduleTranslator.addLightSchedule(ScheduleTranslator.BUILDING_EQUIP_SCHEDUEL,
-							ScheduleTranslator.BUILDING_EQUIP_SCHEDUEL, file);
+				if (equipMap.get("Electricity")[2] == null) {
+					if (scheduleTranslator.getScheduleNameFromID(equipmentSchedule) == null) {
+						scheduleTranslator.addLightSchedule(ScheduleTranslator.BUILDING_EQUIP_SCHEDUEL,
+								ScheduleTranslator.BUILDING_EQUIP_SCHEDUEL, file);
+					}
+				} else {
+					if (scheduleTranslator.getScheduleNameFromID(equipmentSchedule) == null) {
+						scheduleTranslator.addSchedule(ScheduleTranslator.BUILDING_EQUIP_SCHEDUEL,
+								ScheduleTranslator.BUILDING_EQUIP_SCHEDUEL, equipMap.get("Electricity")[2], file);
+					}
 				}
 			}
 
@@ -433,7 +445,16 @@ public class CampusTranslator {
 		List<Element> cartesianPointElements = polyLoopElement.getChildren("CartesianPoint", ns);
 
 		LinkedList<Double[]> coordinateList = new LinkedList<Double[]>();
-
+		
+//		get the curtain wall indicator
+		String CADObjectId = new String();
+		try {
+			Element CADObj = element.getChild("CADObjectId", ns);
+			CADObjectId=CADObj.getText();
+		} catch(Exception e){
+			CADObjectId="";
+		}
+		
 		Element rectangular = element.getChild("RectangularGeometry", ns);
 		Double tiltAngle = Double.parseDouble(rectangular.getChildText("Tilt", ns));
 
@@ -457,24 +478,40 @@ public class CampusTranslator {
 		String surfaceType = element.getAttributeValue("surfaceType");
 		if (surfaceType.contains("Shade")) {
 			// process it as a shading surface
+			String shadeName = element.getChildText("Name", ns);
+			idfWriter.recordInputs("Shading:Building:Detailed", "", "", "");
+			idfWriter.recordInputs(shadeName, "", "Name", "");
+			idfWriter.recordInputs("", "", "Transmittance Schedule Name", "");
+			idfWriter.recordInputs("", "", "Number of Vertices", "");
+
+			for (int j = 0; j < coordinateList.size(); j++) {
+				Double[] point = coordinateList.get(j);
+				for (int k = 0; k < 3; k++) {
+					idfWriter.recordInputs(point[k].toString(), "m", "Vertex " + (j + 1) + " coordinate", "");
+				} 
+			} 
+			idfWriter.addObject(file);
+
 		} else if (surfaceType.contains("FreestandingColumn") || surfaceType.contains("EmbeddedColumn")) {
 			// do nothing
 			return;
 		} else {
 			// regular building surfaces
 			List<Element> adjacentSpaceElements = element.getChildren("AdjacentSpaceId", ns);
+			String spaceId1 = adjacentSpaceElements.get(0).getAttributeValue("spaceIdRef");
+			String spaceId2 = "";
 			if (adjacentSpaceElements.isEmpty()) {
 				// TODO warning: (surface has no adjacent spaces, will not be
 				// translated)
 				return;
 			} else if (adjacentSpaceElements.size() == 2) {
-				String spaceId1 = adjacentSpaceElements.get(0).getAttributeValue("spaceIdRef");
-				String spaceId2 = adjacentSpaceElements.get(1).getAttributeValue("spaceIdRef");
-				if (spaceId1.equals(spaceId2)) {
+				spaceId2 = adjacentSpaceElements.get(1).getAttributeValue("spaceIdRef");
+				// Do nothing if spaceId1.equals(spaceId2) if return, ground floor does not get translated
+				//if (spaceId1.equals(spaceId2)) {
 					// TODO warning: surface has two adjacent spaces which are
 					// the same space: + spaceId1 + will not be translated
-					return;
-				}
+				//	return;
+				//}
 			} else if (adjacentSpaceElements.size() > 2) {
 				// TODO Error, Surface has more than 2 adjacent surfaces, will
 				// not be translated
@@ -507,10 +544,25 @@ public class CampusTranslator {
 				// ceiling type
 			} else if (surfaceType.contains("Ceiling") || surfaceType.contains("UndergroundCeiling")) {
 				eplusSurfaceType = "Ceiling";
+				if (tiltAngle > 179) {
+					tiltAngle = 0.0;
+					String tempId = "";
+					tempId = spaceId1;
+					spaceId1 = spaceId2;
+					spaceId2 = tempId;
+				}	
 				// floor type
+			} else if (surfaceType.contains("InteriorFloor") || surfaceType.contains("ExposedFloor")) {
+				eplusSurfaceType = "Floor";
+				if (tiltAngle < 1) {
+					tiltAngle = 180.0;
+					String tempId = "";
+					tempId = spaceId1;
+					spaceId1 = spaceId2;
+					spaceId2 = tempId;
+				}
 			} else if (surfaceType.contains("UndergroundSlab") || surfaceType.contains("SlabOnGrade")
-					|| surfaceType.contains("InteriorFloor") || surfaceType.contains("RaisedFloor")
-					|| surfaceType.contains("ExposedFloor")) {
+					|| surfaceType.contains("RaisedFloor")) {
 				eplusSurfaceType = "Floor";
 			} else if (surfaceType.contains("Air")) {
 				eplusSurfaceType = assignDefaultSurfaceType(tiltAngle);
@@ -560,9 +612,25 @@ public class CampusTranslator {
 				// set to ""
 				// WX possible link to our database in the future?
 				if (surfaceType.contains("ExteriorWall")) {
-					constructionName = "Project Wall";
+					if (CADObjectId.contains("Curtain")) {
+						constructionName = "Curtain Wall";
+						String constructionNameRef = envelopeTranslator.getObjectName(constructionName);
+						if (constructionNameRef == null) {
+							envelopeTranslator.addCurtainConstruction(eplusSurfaceType, constructionName, file);
+						}
+					}else {
+						constructionName = "Project Wall";
+					}
 				} else if (surfaceType.contains("InteriorWall")) {
-					constructionName = "Project Partition";
+					if (CADObjectId.contains("Curtain")) {
+						constructionName = "Curtain Wall";
+						String constructionNameRef = envelopeTranslator.getObjectName(constructionName);
+						if (constructionNameRef == null) {
+							envelopeTranslator.addCurtainConstruction(eplusSurfaceType, constructionName, file);
+						}
+					}else {
+						constructionName = "Project Partition";;
+					}
 				} else if (surfaceType.contains("UndergroundWall")) {
 					constructionName = "Project Below Grade Wall";
 					// roof types
@@ -583,30 +651,37 @@ public class CampusTranslator {
 				}
 			}
 
-			// translate subsurfaces
-			List<Element> subSurfaces = element.getChildren("Opening", ns);
-			for (Element ss : subSurfaces) {
-				translateSubSurface(ss, file, surfaceName);
-			}
 			// adjacent surface
-			String spaceId = adjacentSpaceElements.get(0).getAttributeValue("spaceIdRef");
-			if (spaceId == null) {
+//			String spaceId = adjacentSpaceElements.get(0).getAttributeValue("spaceIdRef");
+			if (spaceId1 == null) {
 				// TODO Error: there is no space Id in the space.
 			}
-			GbXMLSpace s = bs_idToSpaceMap.get(spaceId);
+			GbXMLSpace s = bs_idToSpaceMap.get(spaceId1);
 			if (s == null) {
 				// TODO Error: there is no space have matching ID: +spaceId;
 			}
 			// assign spaceName for the surface
 			String space1Name = s.getSpaceName();
+			
+			// translate subsurfaces
+			List<Element> subSurfaces = element.getChildren("Opening", ns);
+			for (Element ss : subSurfaces) {
+				if (surfaceType.contains("InteriorWall")) { //Revised to not convert interior windows
+                    continue;
+                }
+//				if (surfaceType.contains("InteriorFloor")) {
+//					continue;
+//				}
+				translateSubSurface(ss, file, surfaceName,eplusSurfaceType,space1Name,outsideBoundaryCondition,sunExposure,windExposure);
+			}
 
 			// add object label
 			idfWriter.recordInputs("BuildingSurface:Detailed", "", "", "");
 
 			// must be an interior surface: ceiling/floor or interior wall
-			if (adjacentSpaceElements.size() == 2) {
-				String adjacentSpaceId = adjacentSpaceElements.get(1).getAttributeValue("spaceIdRef");
-				GbXMLSpace as = bs_idToSpaceMap.get(adjacentSpaceId);
+			if (adjacentSpaceElements.size() == 2 && !spaceId1.equals(spaceId2)) {
+				
+				GbXMLSpace as = bs_idToSpaceMap.get(spaceId2);
 
 				// deal with the ceiling/floors - unify the surface types
 				String tempSurfType = assignDefaultSurfaceType(tiltAngle);
@@ -630,7 +705,7 @@ public class CampusTranslator {
 				idfWriter.recordInputs(constructionName, "", "Construction Name", "");
 				idfWriter.recordInputs(space1Name, "", "Zone Name", "");
 				idfWriter.recordInputs(outsideBoundaryCondition, "", "Outside Boundary Condition", "");
-				idfWriter.recordInputs(surfaceName + "_reversed", "", "Outside Boundary Condition Object", "");
+				idfWriter.recordInputs(surfaceName, "", "Outside Boundary Condition Object", ""); 
 				idfWriter.recordInputs(sunExposure, "", "Sun Exposure", "");
 				idfWriter.recordInputs(windExposure, "", "Wind Exposure", "");
 				idfWriter.recordInputs("", "", "View Factor to Ground", "");
@@ -646,7 +721,7 @@ public class CampusTranslator {
 
 				// second
 				// reverse construction
-				String reversedConsName = envelopeTranslator.getObjectName(constructionIdRef + "_reversed");
+				String reversedConsName = envelopeTranslator.getObjectName(constructionName + "_reversed");
 				IDFObject reversedConstruction = null;
 				if (reversedConsName == null) {
 					List<IDFObject> constructionList = file.getCategoryList("Construction");
@@ -674,7 +749,7 @@ public class CampusTranslator {
 							reversedConsName = reversedConstruction.getName();
 						}
 
-						envelopeTranslator.setReversedConstruction(constructionIdRef + "_reversed", reversedConsName);
+						envelopeTranslator.setReversedConstruction(constructionName + "_reversed", reversedConsName);
 					} else {
 						reversedConsName = "";
 					}
@@ -683,12 +758,21 @@ public class CampusTranslator {
 				idfWriter.recordInputs("BuildingSurface:Detailed", "", "", "");
 				Collections.reverse(coordinateList);
 
+				String eplusSurfaceTypeReverse = "";
+				if (eplusSurfaceType=="Ceiling") {
+					eplusSurfaceTypeReverse="Floor";
+				} else if (eplusSurfaceType=="Floor") {
+					eplusSurfaceTypeReverse="Ceiling";
+				} else {
+					eplusSurfaceTypeReverse=eplusSurfaceType;
+				} 
+
 				idfWriter.recordInputs(surfaceName + "_reversed", "", "Name", "");
-				idfWriter.recordInputs(eplusSurfaceType, "", "Surface Type", "");
-				idfWriter.recordInputs(reversedConsName, "", "Construction Name", "");
+				idfWriter.recordInputs(eplusSurfaceTypeReverse, "", "Surface Type", "");
+				idfWriter.recordInputs(constructionName+ "_reversed", "", "Construction Name", "");
 				idfWriter.recordInputs(space2Name, "", "Zone Name", "");
 				idfWriter.recordInputs(outsideBoundaryCondition, "", "Outside Boundary Condition", "");
-				idfWriter.recordInputs(surfaceName, "", "Outside Boundary Condition Object", "");
+				idfWriter.recordInputs(surfaceName + "_reversed", "", "Outside Boundary Condition Object", "");
 				idfWriter.recordInputs(sunExposure, "", "Sun Exposure", "");
 				idfWriter.recordInputs(windExposure, "", "Wind Exposure", "");
 				idfWriter.recordInputs("", "", "View Factor to Ground", "");
@@ -708,7 +792,7 @@ public class CampusTranslator {
 				idfWriter.recordInputs(constructionName, "", "Construction Name", "");
 				idfWriter.recordInputs(space1Name, "", "Zone Name", "");
 				idfWriter.recordInputs(outsideBoundaryCondition, "", "Outside Boundary Condition", "");
-				idfWriter.recordInputs("", "", "Outside Boundary Condition Object", "");
+				idfWriter.recordInputs(surfaceName, "", "Outside Boundary Condition Object", "");
 				idfWriter.recordInputs(sunExposure, "", "Sun Exposure", "");
 				idfWriter.recordInputs(windExposure, "", "Wind Exposure", "");
 				idfWriter.recordInputs("", "", "View Factor to Ground", "");
@@ -725,7 +809,7 @@ public class CampusTranslator {
 		} // if - surfaceType
 	}
 
-	private void translateSubSurface(Element element, IDFFileObject file, String hostSurfaceName) {
+	private void translateSubSurface(Element element, IDFFileObject file, String hostSurfaceName, String eplusSurfaceType, String space1Name,String outsideBoundaryCondition, String sunExposure, String windExposure) {
 
 		Element planarGeometryElement = element.getChild("PlanarGeometry", ns);
 		Element polyLoopElement = planarGeometryElement.getChild("PolyLoop", ns);
@@ -760,9 +844,9 @@ public class CampusTranslator {
 		subSurfaceName = escapeName(subSurfaceId, subSurfaceName);
 
 		// translate openingType;
+		boolean flgSkyLight = false; // flag to check for skylight
 		String openingType = element.getAttributeValue("openingType");
-		if (openingType.contains("FixedWindow") || openingType.contains("OperableWindow")
-				|| openingType.contains("FixedSkylight") || openingType.contains("OperableSkylight")) {
+		if (openingType.contains("FixedWindow") || openingType.contains("OperableWindow")) { 
 			openingType = "Window";
 		} else if (openingType.contains("SlidingDoor")) {
 			openingType = "GlassDoor";
@@ -771,6 +855,9 @@ public class CampusTranslator {
 			// do we even want to handling air?
 		} else if (openingType.contains("Air")) {
 			openingType = "Air";
+		} else if (openingType.contains("FixedSkylight") || openingType.contains("OperableSkylight")) {
+			openingType = "Window";
+			flgSkyLight = true; // Addition
 		}
 
 		String constructionIdRef = element.getAttributeValue("constructionIdRef");
@@ -780,24 +867,44 @@ public class CampusTranslator {
 		String constructionName = "";
 		// if air opening?
 		if (openingType.contains("Air")) {
-			String id = openingType + "Air";
+			String id = eplusSurfaceType+"Air";
 			constructionName = envelopeTranslator.getObjectName(id);
 			if (constructionName == null) {
-				envelopeTranslator.addAirConstruction(openingType, id, file);
+				envelopeTranslator.addSubAirConstruction(eplusSurfaceType, id, file);
 				constructionName = envelopeTranslator.getObjectName(id);
 			}
+			idfWriter.recordInputs("BuildingSurface:Detailed", "", "", "");
+			idfWriter.recordInputs(subSurfaceName, "", "Name", "");
+			idfWriter.recordInputs(eplusSurfaceType, "", "Surface Type", "");
+			idfWriter.recordInputs(constructionName, "", "Construction Name", "");
+			idfWriter.recordInputs(space1Name, "", "Zone Name", "");
+			idfWriter.recordInputs(outsideBoundaryCondition, "", "Outside Boundary Condition", "");
+			idfWriter.recordInputs(subSurfaceName, "", "Outside Boundary Condition Object", "");  //25-0ct
+//			idfWriter.recordInputs("", "", "Outside Boundary Condition Object", "");  //25-0ct: Original
+			idfWriter.recordInputs(sunExposure, "", "Sun Exposure", "");
+			idfWriter.recordInputs(windExposure, "", "Wind Exposure", "");
+			idfWriter.recordInputs("", "", "View Factor to Ground", "");
+			idfWriter.recordInputs("", "", "Number of Vertices", "");
+			for (int j = 0; j < coordinateList.size(); j++) {
+				Double[] point = coordinateList.get(j);
+				for (int k = 0; k < 3; k++) {
+					idfWriter.recordInputs(point[k].toString(), "m", "Vertex " + (j + 1) + " coordinate", "");
+				} // for
+			} // for
+			idfWriter.addObject(file);
+			return;
 		} else {
 			constructionName = envelopeTranslator.getObjectName(constructionIdRef);
 		}
 
 		if (constructionName == null) {
 
-			if (openingType.contains("Window")) {
+			if (openingType.contains("Window") && !flgSkyLight) {
 				constructionName = "Project Window";
+			} else if (openingType.contains("Window") && flgSkyLight) {	
+				constructionName = "Project Skylight";
 			} else if (openingType.contains("SlidingDoor") || openingType.contains("NonSlidingDoor") || openingType.contains("GlassDoor")) {
 				constructionName = "Project Curtain Wall";
-			} else if (openingType.contains("FixedSkylight") || openingType.contains("OperableSkylight")) {
-				constructionName = "Project Skylight";
 				// do we even want to handling air?
 			} else if (openingType.contains("Air")) {
 				constructionName = "Project Window";
@@ -1112,11 +1219,11 @@ public class CampusTranslator {
 			idfWriter.recordInputs("0.0025", "", "Outdoor Air Flow per Zone Floor Area", "");
 			idfWriter.recordInputs("0.0", "", "Outdoor Air Flow per Zone", "");
 			idfWriter.recordInputs("0.0", "", "Outdoor Air FLow Air Changes per Hour", "");
-			idfWriter.recordInputs("Default_Office_OA_Schedule", "", "Outdoor Air FLow Rate Fraction Schedule Name", "");
+			idfWriter.recordInputs(Default_Office_OA_Schedule, "", "Outdoor Air FLow Rate Fraction Schedule Name", "");
 			idfWriter.addObject(file);
 
 			// add this default OA schedule here!
-			scheduleTranslator.addSimpleCompactSchedule("Default_Office_OA_Schedule", "OA_id", 1.0, file);
+			scheduleTranslator.addSimpleCompactSchedule(Default_Office_OA_Schedule, Default_Office_OA_Schedule, 1.0, file);
 
 			// sizing zone
 			idfWriter.recordInputs("Sizing:Zone", "", "", "");
@@ -1155,7 +1262,7 @@ public class CampusTranslator {
 
 			String thermostatType = "ThermostatSetpoint:DualSetpoint";
 			Integer controlType = 4;
-			String thermostatName = "Dual Setpoint Dual SP";
+			String thermostatName = "Dual Setpoint Dual SP"+spaceName;
 
 			String controlTypeSchedule = scheduleTranslator.getScheduleNameFromID("controlType " + controlType);
 			if (controlTypeSchedule == null) {
@@ -1164,11 +1271,12 @@ public class CampusTranslator {
 						"controlType " + controlType, (double) controlType, file);
 				controlTypeSchedule = scheduleTranslator.getScheduleNameFromID("controlType " + controlType);
 			}
-
-			scheduleTranslator.addHeatingSchedule(ScheduleTranslator.BUILDING_HTGSP_SCHEDULE, ScheduleTranslator.BUILDING_HTGSP_SCHEDULE, file);
-			String heatName = ScheduleTranslator.BUILDING_HTGSP_SCHEDULE;
-			scheduleTranslator.addCoolingSchedule(ScheduleTranslator.BUILDING_CLGSP_SCHEDULE, ScheduleTranslator.BUILDING_CLGSP_SCHEDULE, file);
-			String coolName = ScheduleTranslator.BUILDING_CLGSP_SCHEDULE;
+			
+			String heatName = ScheduleTranslator.BUILDING_HTGSP_SCHEDULE+spaceName;
+			String coolName = ScheduleTranslator.BUILDING_CLGSP_SCHEDULE+spaceName;
+			scheduleTranslator.addHeatingSchedule(heatName, heatName, file);
+			scheduleTranslator.addCoolingSchedule(coolName, coolName, file);
+			
 
 			idfWriter.recordInputs(thermostatType, "", "", "");
 			idfWriter.recordInputs(thermostatName, "", "Name", "");
@@ -1296,7 +1404,7 @@ public class CampusTranslator {
 			// skips 1, the name of the construction
 			lines.add(value[value.length - 1 - i]);
 			units.add(unit[i]);
-			comments.add(comment[i]);
+			comments.add(comment[i+1]); 
 		}
 
 		return new IDFObject(lines, units, comments, topComments);

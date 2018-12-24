@@ -1,0 +1,41 @@
+Program Version,EnergyPlus, Version 8.6.0-198c6a3cff, YMD=2018.12.24 22:52,IDD_Version 8.6.0
+   ************* Beginning Zone Sizing Calculations
+   ** Warning ** Weather file location will be used rather than entered (IDF) Location object.
+   **   ~~~   ** ..Location object=4 ARCHITECTURE DR_ SINGAPORE 117566_ SINGAPORE
+   **   ~~~   ** ..Weather File Location=SINGAPORE-CHANGI-AP - SGP Custom-486980 WMO#=486980
+   **   ~~~   ** ..due to location differences, Latitude difference=[6.09E-002] degrees, Longitude difference=[0.11] degrees.
+   **   ~~~   ** ..Time Zone difference=[7.0] hour(s), Elevation difference=[58.99] percent, [23.01] meters.
+   ************* Beginning System Sizing Calculations
+   ************* Beginning Plant Sizing Calculations
+   ** Warning ** In calculating the design coil UA for Coil:Cooling:Water LEVEL 1 COOLING COIL
+   **   ~~~   ** no apparatus dew-point can be found for the initial entering and leaving conditions;
+   **   ~~~   ** the coil outlet design conditions will be changed to correct the problem.
+   **   ~~~   ** The initial design conditions are: Tair,in = 26.3016
+   **   ~~~   **                                    Wair,in = 1.419172E-002
+   **   ~~~   **                                    Twater,in = 6.7000
+   **   ~~~   **                                    Tair,out = 12.8000
+   **   ~~~   **                                    Wair,out = 8.291776E-003
+   **   ~~~   ** The revised design conditions are: Tair,out = 12.7997
+   **   ~~~   **                                    Wair,out = 8.291881E-003
+   ** Warning ** GetElectricEIRChillerInput: Chiller:Electric:EIR="CHILLER%"
+   **   ~~~   ** Energy input ratio as a function of part-load ratio curve output is not equal to 1.0 (+ or - 10%) at reference conditions.
+   **   ~~~   ** Curve output at reference conditions = 1.114
+   ************* Testing Individual Branch Integrity
+   ************* All Branches passed integrity testing
+   ************* Testing Individual Supply Air Path Integrity
+   ************* All Supply Air Paths passed integrity testing
+   ************* Testing Individual Return Air Path Integrity
+   ************* All Return Air Paths passed integrity testing
+   ************* No node connection errors were found.
+   ************* Beginning Simulation
+   ** Warning ** ReadEPlusWeatherForDay: Feb29 data encountered but will not be processed.
+   **   ~~~   ** ...WeatherFile does not allow Leap Years. HOLIDAYS/DAYLIGHT SAVINGS header must indicate "Yes".
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at SINGAPORE-CHANGI-AP - SGP Custom-486980 WMO#=486980, 12/01 16:20 - 16:30
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** ...use Output:Diagnostics,DisplayExtraWarnings; to show more details on each max iteration exceeded.
+   ************* Simulation Error Summary *************
+   ************* There are 2 unused schedules in input.
+   ************* Use Output:Diagnostics,DisplayUnusedSchedules; to see them.
+   ************* EnergyPlus Warmup Error Summary. During Warmup: 0 Warning; 0 Severe Errors.
+   ************* EnergyPlus Sizing Error Summary. During Sizing: 1 Warning; 0 Severe Errors.
+   ************* EnergyPlus Completed Successfully-- 5 Warning; 0 Severe Errors; Elapsed Time=00hr 00min 11.50sec

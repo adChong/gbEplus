@@ -33,7 +33,7 @@ public class RunTool {
 		   
 //	       String gbXMLfilepath = args[0];  
 //	       String OutputFilepath = args[1]; 
-		   String gbXMLfilepath = "./resource/test2.xml";
+		   String gbXMLfilepath = "./resource/Ventus_Archi_updated materials.xml";
 		   String OutputFilepath = "./output"; 
 	       System.out.println("translating gbXML to IDF.....");
 	       Path p = Paths.get(gbXMLfilepath);        
