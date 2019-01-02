@@ -584,6 +584,7 @@ public class CampusTranslator {
 				sunExposure = "NoSun";
 				windExposure = "NoWind";
 			} else if (surfaceType.contains("SlabOnGrade") || 
+					   surfaceType.contains("UndergroundSlab") ||
 					(adjacentSpaceElements.size() == 2 && spaceId1.equals(spaceId2))) {
 				// Assume all the SlabOnGrade have two same sapceId
 				outsideBoundaryCondition = "Ground";
